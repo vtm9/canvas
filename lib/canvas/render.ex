@@ -60,23 +60,6 @@ defmodule Canvas.Render do
     |> render_rectangle_outline(drawing)
   end
 
-  defp render_rectangle_outline(render, drawing) do
-    %{
-      props: %{
-        corner: [corner_x, corner_y],
-        outline: outline,
-        width: width,
-        height: height
-      }
-    } = drawing
-
-    render
-    |> render_row(corner_y, corner_x, corner_x + width - 1, outline)
-    |> render_row(corner_y + height - 1, corner_x, corner_x + width - 1, outline)
-    |> render_column(corner_x, corner_y, corner_y + height - 1, outline)
-    |> render_column(corner_x + width - 1, corner_y, corner_y + height - 1, outline)
-  end
-
   defp render_drawing(
          render,
          %{type: "rectangle", props: %{outline: outline, fill: fill}} = drawing
@@ -96,26 +79,84 @@ defmodule Canvas.Render do
     end)
   end
 
-  defp render_drawing(render, %{type: "flood"} = flood) do
+  defp render_drawing(render, %{type: "flood"} = drawing) do
+    %{props: %{char: char, point: [point_x, point_y]}} = drawing
+
+    visited = MapSet.new()
+    original_char = get_char(render, {point_x, point_y})
+
+    {new_render, _visited} = render_flood(render, visited, {point_x, point_y}, original_char, char)
+    new_render
+  end
+
+  defp render_drawing(render, drawing) do
     render
   end
 
-  def render_row(render, y, from_x, to_x, char) do
+  defp render_flood(
+         %{width: width, height: height} = render,
+         visited,
+         {point_x, point_y},
+         original_char,
+         char
+       )
+       when in_image?(width, height, point_x, point_y) do
+    if get_char(render, {point_x, point_y}) != original_char do
+      {render, visited}
+    else
+      new_visited = MapSet.put(visited, {point_x, point_y})
+      new_render = render_point(render, {point_x, point_y}, char)
+
+      nearby_points =
+        [
+          {point_x - 1, point_y},
+          {point_x + 1, point_y},
+          {point_x, point_y - 1},
+          {point_x, point_y + 1}
+        ]
+        |> Enum.filter(&(!MapSet.member?(new_visited, &1)))
+        |> Enum.filter(fn {x, y} -> in_image?(width, height, x, y) end)
+
+      Enum.reduce(nearby_points, {new_render, new_visited}, fn {next_x, next_y},
+                                                               {acc_render, acc_visited} ->
+        render_flood(acc_render, acc_visited, {next_x, next_y}, original_char, char)
+      end)
+    end
+  end
+
+  defp render_rectangle_outline(render, drawing) do
+    %{
+      props: %{
+        corner: [corner_x, corner_y],
+        outline: outline,
+        width: width,
+        height: height
+      }
+    } = drawing
+
+    render
+    |> render_row(corner_y, corner_x, corner_x + width - 1, outline)
+    |> render_row(corner_y + height - 1, corner_x, corner_x + width - 1, outline)
+    |> render_column(corner_x, corner_y, corner_y + height - 1, outline)
+    |> render_column(corner_x + width - 1, corner_y, corner_y + height - 1, outline)
+  end
+
+  defp render_row(render, y, from_x, to_x, char) do
     from_x..to_x
     |> Enum.reduce(render, fn x, acc -> render_point(acc, {x, y}, char) end)
   end
 
-  def render_column(render, x, from_y, to_y, char) do
+  defp render_column(render, x, from_y, to_y, char) do
     from_y..to_y
     |> Enum.reduce(render, fn y, acc -> render_point(acc, {x, y}, char) end)
   end
 
-  def render_point(%{width: width, height: height, points: points} = render, {x, y}, char)
-      when in_image?(width, height, x, y) do
+  defp render_point(%{width: width, height: height, points: points} = render, {x, y}, char)
+       when in_image?(width, height, x, y) do
     %{render | points: Map.put(points, {x, y}, char)}
   end
 
-  def render_point(render, _point, _char), do: render
+  defp render_point(render, _point, _char), do: render
 
   defp print(render) do
     %Render{width: width, height: height} = render
@@ -123,7 +164,7 @@ defmodule Canvas.Render do
     Enum.reduce(0..height, "", fn row_num, acc ->
       row =
         Enum.reduce(0..width, acc, fn col_num, col_acc ->
-          col_acc <> Map.get(render.points, {col_num, row_num}, @default_char)
+          col_acc <> get_char(render, {col_num, row_num})
         end)
 
       if row_num == height do
@@ -132,5 +173,9 @@ defmodule Canvas.Render do
         row <> "\n"
       end
     end)
+  end
+
+  defp get_char(render, point) do
+    Map.get(render.points, point, @default_char)
   end
 end
