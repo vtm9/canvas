@@ -10,7 +10,15 @@ defmodule Canvas.MixProject do
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      elixirc_options: [warnings_as_errors: true]
     ]
   end
 
@@ -43,6 +51,7 @@ defmodule Canvas.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:polymorphic_embed, "~> 1.3.4"},
       {:ex_machina, "~> 2.3", only: :test},
+      {:excoveralls, "~> 0.11.2", only: :test},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
