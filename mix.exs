@@ -42,7 +42,8 @@ defmodule Canvas.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:polymorphic_embed, "~> 1.3.4"},
-      {:ex_machina, "~> 2.3", only: :test}
+      {:ex_machina, "~> 2.3", only: :test},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 
