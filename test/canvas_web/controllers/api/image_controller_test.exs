@@ -48,7 +48,8 @@ defmodule CanvasWeb.Api.ImageControllerTest do
                    "id" => image.id,
                    "height" => image.height,
                    "width" => image.width,
-                   "canvas" => "   \n" <> "   "
+                   "drawings" => [],
+                   "canvas" => "    \n    \n    "
                  }
     end
   end

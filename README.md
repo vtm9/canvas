@@ -50,7 +50,7 @@ body:
   "id": 1,
   "image_id": 2,
   "type": "rectangle",
-    "props": %{
+    "props": {
       "corner": [1, 1],
       "width": 10,
       "height": 10,
@@ -75,7 +75,7 @@ body:
   "id": 2,
   "image_id": 2,
   "type": "flood",
-    "props": %{
+    "props": {
       "point": [1, 1],
       "char": "A"
     }
@@ -94,6 +94,29 @@ body: {
 "id": 37,
 "width": 21,
 "height": 8,
+"drawings": [
+  {
+    "id": 1,
+    "image_id": 2,
+    "type": "rectangle",
+      "props": {
+        "corner": [1, 1],
+        "width": 10,
+        "height": 10,
+        "fill": "A",
+        "outline": "A"
+      }
+  },
+  {
+    "id": 2,
+    "image_id": 2,
+    "type": "flood",
+      "props": {
+        "point": [1, 1],
+        "char": "A"
+      }
+  }
+],
 "canvas":
 "
               .......
