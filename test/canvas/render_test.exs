@@ -3,7 +3,7 @@ defmodule Canvas.RenderTest do
 
   alias Canvas.Render
 
-  describe ".call/1" do
+  describe ".call/1 valid cases" do
     test "renders first fixture image" do
       rec1 =
         build(:rectangle,
@@ -150,6 +150,72 @@ O      O------.......\N
 O    XXXXX----.......\N
 OOOOOXXXXX-----------\N
      XXXXX-----------\N)
+        |> prepare_fixture()
+
+      assert %{canvas: ^expected} = Render.call(image)
+    end
+  end
+
+  describe ".call/1 invalid cases" do
+    test "renders rectangle and flood out of range" do
+      rec1 =
+        build(:rectangle,
+          props: %{
+            corner: [5, 5],
+            width: 3,
+            height: 3,
+            fill: "A",
+            outline: "B"
+          }
+        )
+
+      rec2 =
+        build(:rectangle,
+          props: %{
+            corner: [-10, -10],
+            width: 2,
+            height: 4,
+            fill: "C",
+            outline: "D"
+          }
+        )
+
+      rec3 =
+        build(:rectangle,
+          props: %{
+            corner: [2, 2],
+            width: 10,
+            height: 10,
+            fill: "E",
+            outline: "F"
+          }
+        )
+
+      flood1 =
+        build(:flood,
+          props: %{
+            point: [-1, 0],
+            char: "-"
+          }
+        )
+
+      flood2 =
+        build(:flood,
+          props: %{
+            point: [10, 10],
+            char: "."
+          }
+        )
+
+      image = build(:image, width: 4, height: 4, drawings: [rec1, rec2, rec3, flood1, flood2])
+
+      expected =
+        ~s(
+     \N
+     \N
+  FFF\N
+  FEE\N
+  FEE\N)
         |> prepare_fixture()
 
       assert %{canvas: ^expected} = Render.call(image)

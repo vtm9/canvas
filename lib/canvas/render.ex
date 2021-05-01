@@ -85,7 +85,9 @@ defmodule Canvas.Render do
     visited = MapSet.new()
     original_char = get_char(render, {point_x, point_y})
 
-    {new_render, _visited} = render_flood(render, visited, {point_x, point_y}, original_char, char)
+    {new_render, _visited} =
+      render_flood(render, visited, {point_x, point_y}, original_char, char)
+
     new_render
   end
 
@@ -123,6 +125,8 @@ defmodule Canvas.Render do
       end)
     end
   end
+
+  defp render_flood(render, visited, _point, _original_char, _char), do: {render, visited}
 
   defp render_rectangle_outline(render, drawing) do
     %{
