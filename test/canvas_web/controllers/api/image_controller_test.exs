@@ -42,15 +42,14 @@ defmodule CanvasWeb.Api.ImageControllerTest do
       image = insert(:image, width: 3, height: 2)
       conn = get(conn, Routes.image_path(conn, :show, image.id))
 
-      expected_canvas =
-        assert json_response(conn, 200) ==
-                 %{
-                   "id" => image.id,
-                   "height" => image.height,
-                   "width" => image.width,
-                   "drawings" => [],
-                   "canvas" => "    \n    \n    "
-                 }
+      assert json_response(conn, 200) ==
+               %{
+                 "id" => image.id,
+                 "height" => image.height,
+                 "width" => image.width,
+                 "drawings" => [],
+                 "canvas" => "    \n    \n    "
+               }
     end
   end
 end

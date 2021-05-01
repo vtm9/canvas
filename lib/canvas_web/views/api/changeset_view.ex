@@ -1,13 +1,6 @@
 defmodule CanvasWeb.Api.ChangesetView do
   use CanvasWeb, :view
 
-  @doc """
-  Traverses and translates changeset errors.
-
-  See `Ecto.Changeset.traverse_errors/2` and
-  `BowlingWeb.ErrorHelpers.translate_error/1` for more details.
-  """
-
   # FIXME: remove custom translate_errors function for PolymorphicEmbed
   # after this issue is fixed
   # https://github.com/mathieuprog/polymorphic_embed/issues/38
