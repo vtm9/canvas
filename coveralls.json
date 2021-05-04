@@ -3,7 +3,6 @@
     "lib/canvas/application.ex",
     "lib/canvas_web.ex",
     "lib/canvas_web/router.ex",
-    "lib/canvas_web/views/error_helpers.ex",
     "test/support"
   ],
   "coverage_options": {
