@@ -21,33 +21,35 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v1
-
-      - uses: actions/setup-elixir@v1.4.2
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
         with:
-          otp-version: 23.x
-          elixir-version: 1.11.x
+          otp-version: "23.x"
+          elixir-version: "1.11.4"
 
-      - uses: actions/cache@v1
+      - name: Cache deps
+        uses: actions/cache@v2
         with:
           path: deps
           key: ${{ runner.os }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: |
             ${{ runner.os }}-deps-
 
-      - uses: actions/cache@v1
+      - name: Cache build
+        uses: actions/cache@v2
         with:
           path: _build
           key: ${{ runner.os }}-build-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: |
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-build
 
-      - uses: actions/cache@v1
+      - name: Cache .mix
+        uses: actions/cache@v2
         with:
           path: ~/.mix
           key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: |
-            ${{ runner.os }}-mix-
+            ${{ runner.os }}-mix
 
       - name: Get deps
         run: mix deps.get
