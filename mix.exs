@@ -16,6 +16,7 @@ defmodule Canvas.MixProject do
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
+        "coveralls.json": :test,
         "coveralls.html": :test
       ],
       elixirc_options: [warnings_as_errors: true]
