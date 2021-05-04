@@ -12,6 +12,8 @@ jobs:
       db:
         image: postgres:13-alpine
         ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -20,7 +22,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-
 
       - uses: actions/setup-elixir@v1.4.2
         with:
