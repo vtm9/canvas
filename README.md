@@ -1,5 +1,8 @@
 # Canvas
 
+[![Build](https://github.com/vtm9/canvas/workflows/Build/badge.svg)](https://github.com/vtm9/canvas/actions)
+[![codecov](https://codecov.io/gh/vtm9/canvas/branch/master/graph/badge.svg)](https://codecov.io/gh/vtm9/canvas)
+
 Small API server to represent an ASCII art drawing canvas.
 
 ### Requirements
