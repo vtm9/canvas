@@ -91,8 +91,6 @@ defmodule Canvas.Render do
     new_render
   end
 
-  defp render_drawing(render, _drawing), do: render
-
   defp render_flood(
          %{width: width, height: height} = render,
          visited,
