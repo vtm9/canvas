@@ -8,7 +8,6 @@ server:
 test:
 	mix test --cover
 
-
 lint:
 	mix credo
 
