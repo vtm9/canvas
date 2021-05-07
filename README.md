@@ -42,7 +42,7 @@ body: {"id": 1 "width": 10, "height": 10, "canvas": ""}
 ### Create a rectangle for image
 
 ```bash
- curl -X POST  http://localhost:4000/api/v1/images/:image_id/drawing \
+ curl -X POST  http://localhost:4000/api/v1/images/:image_id/drawings \
 -H "Content-Type: application/json" \
 -d '{"drawing": {"type": "rectangle", "props": {"corner": [1,1], "width": 10, "height": 10, "fill": "A", "outline": "B"}}}'
 
@@ -67,9 +67,9 @@ body:
 ### Create a flood fill for image
 
 ```bash
- curl -X POST  http://localhost:4000/api/v1/images/:image_id/drawing \
+ curl -X POST  http://localhost:4000/api/v1/images/:image_id/drawings \
 -H "Content-Type: application/json" \
--d '{"drawing": {"type": "flood", "props" {"point": [1,1], "char": "A"}}}'
+-d '{"drawing": {"type": "flood", "props": {"point": [1,1], "char": "A"}}}'
 
 # response
 status: 201
@@ -88,7 +88,7 @@ body:
 ### Show image
 
 ```bash
- curl -X GET http://localhost:4000/api/v1/images/:id \
+ curl -X GET http://localhost:4000/api/v1/images/:image_id \
 -H "Content-Type: application/json"
 
 # response
